@@ -7,15 +7,15 @@
 @section('contenido')
     <div class="container mx-auto flex flex-col md:flex-row gap-10 py-10 px-4 items-start">
         <!-- Post Image & Info Glassmorphism -->
-        
+
         <div
             class="w-full md:w-1/2 flex flex-col items-center bg-white/70 backdrop-blur-lg rounded-3xl shadow-2xl p-6 md:p-10 border border-blue-100 self-start h-auto md:h-[calc(100vh-200px)] transition-transform hover:scale-[1.01]">
             <img class="w-full h-96 object-cover rounded-2xl mb-6 shadow-2xl border-4 border-blue-200 hover:shadow-2xl transition"
                 src="{{ asset('uploads') . '/' . $post->imagen }}" alt="Imagen del post {{ $post->titulo }}">
             <div class="w-full flex justify-start mb-4">
                 @auth
-                <livewire:like-post :post="$post" />
-                    
+                    <livewire:like-post :post="$post" />
+
                 @endauth
 
 
@@ -23,11 +23,16 @@
             <div class="w-full">
                 <div class="flex items-center gap-3 mb-2">
                     <div class="bg-gradient-to-br from-sky-100 to-blue-200 rounded-full p-2 shadow-lg">
-                        <svg class="w-9 h-9 text-sky-600" fill="currentColor" viewBox="0 0 24 24">
-                            <path fill-rule="evenodd"
-                                d="M12 2a10 10 0 100 20 10 10 0 000-20zm0 3a3 3 0 110 6 3 3 0 010-6zm0 14a7 7 0 01-5.916-3.09c.032-1.97 3.944-3.06 5.916-3.06 1.972 0 5.884 1.09 5.916 3.06A7 7 0 0112 19z"
-                                clip-rule="evenodd" />
-                        </svg>
+                        @if ($post->user->imagen)
+                            <img src="{{ asset('perfiles/' . $post->user->imagen) }}" alt="Avatar usuario"
+                                class="w-9 h-9 rounded-full object-cover">
+                        @else
+                            <svg class="w-9 h-9 text-sky-600" fill="currentColor" viewBox="0 0 24 24">
+                                <path fill-rule="evenodd"
+                                    d="M12 2a10 10 0 100 20 10 10 0 000-20zm0 3a3 3 0 110 6 3 3 0 010-6zm0 14a7 7 0 01-5.916-3.09c.032-1.97 3.944-3.06 5.916-3.06 1.972 0 5.884 1.09 5.916 3.06A7 7 0 0112 19z"
+                                    clip-rule="evenodd" />
+                            </svg>
+                        @endif
                     </div>
                     <div>
                         <p class="font-bold text-lg text-sky-700">{{ $post->user->username }}</p>
@@ -68,7 +73,12 @@
                             <div class="flex-shrink-0">
                                 <div
                                     class="w-10 h-10 rounded-full bg-sky-200 flex items-center justify-center text-sky-700 font-bold text-lg shadow">
-                                    {{ strtoupper(substr($comentario->user->username, 0, 1)) }}
+                                    @if ($comentario->user->imagen)
+                                        <img src="{{ asset('perfiles/' . $comentario->user->imagen) }}" alt="Avatar"
+                                            class="w-10 h-10 rounded-full object-cover">
+                                    @else
+                                        {{ strtoupper(substr($comentario->user->username, 0, 1)) }}
+                                    @endif
                                 </div>
                             </div>
                             <div class="flex-1">
